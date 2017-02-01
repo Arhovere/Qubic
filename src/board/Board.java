@@ -1,4 +1,4 @@
-package Board;
+package board;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public class Board {
 	// -----Constructor----------------------------------------------
 
 	/**
-	 * Creates a new board filled with beautiful emptyness.
+	 * Creates a new board filled with beautiful emptiness.
 	 * 
 	 */
 	public Board() {
@@ -33,6 +33,28 @@ public class Board {
 	}
 
 	// -----Methods--------------------------------------------------
+
+	/**
+	 * Creates a new Board with an exact copy of the contents of the current board.
+	 * 
+	 * @return new Board newBoard with a copy of the current boards contents
+	 * @throws CoordinatesNotFoundException if field is out of range
+	 */
+	/*
+	 *@ensures \result != this; ensures \result.getField(r,c,l) == this.getField(r,c,l);
+	 */
+	/*pure */
+	public Board deepCopy() throws CoordinatesNotFoundException {
+		Board newBoard = new Board();
+		for (int l = 0; l < DIM; l++) {
+			for (int r = 0; r < DIM; r++) {
+				for (int c = 0; c < DIM; c++) {
+					newBoard.setField(r, c, l, getField(r, c, l));
+				}
+			}
+		}
+		return newBoard;
+	}
 
 	/**
 	 * Checks if either player or bot aren't cheating by entering an invalid
@@ -47,11 +69,10 @@ public class Board {
 	 * @return true if 0 <= row && row < DIM && 0 <= col && col < DIM && 0 <=
 	 *         lay && lay < DIM
 	 */
-	// @ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM && 0
-	// <= lay && lay < DIM);
-	/* @pure */
+	//@ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM && 0 <= lay && lay < DIM);
+	/*@pure */
 	public boolean isField(int row, int col, int lay) {
-		return (0 <= row && row < DIM && 0 <= col && col < DIM && 0 <= lay && lay < DIM);
+		return 0 <= row && row < DIM && 0 <= col && col < DIM && 0 <= lay && lay < DIM;
 	}
 
 	/**
@@ -67,10 +88,9 @@ public class Board {
 	 * @throws CoordinatesNotFoundException
 	 *             if field out of range
 	 */
-	// @ requires this.isField(row,col,lay);
-	// @ ensures \result == Mark.EMPTY || \result == Mark.XX || \result ==
-	// Mark.OO;
-	/* @pure */
+	//@requires this.isField(row,col,lay);
+	//@ensures \result == Mark.EMPTY || \result == Mark.XX || \result == Mark.OO;
+	/*@pure */
 	public Mark getField(int row, int col, int lay) throws CoordinatesNotFoundException {
 		if (isField(row, col, lay)) {
 			Mark res = fields[row][col][lay];
@@ -93,11 +113,45 @@ public class Board {
 	 * @throws CoordinatesNotFoundException
 	 *             if field out of range
 	 */
-	// @ requires this.isField(row,col,lay);
-	// @ ensures \result == (this.getField(row,col,lay) == Mark.EMPTY);
-	/* @pure */
+	//@requires this.isField(row,col,lay);
+	//@ensures \result == (this.getField(row,col,lay) == Mark.EMPTY);
+	/*@pure */
 	public boolean isEmptyField(int row, int col, int lay) throws CoordinatesNotFoundException {
-		return (getField(row, col, lay) == Mark.EMPTY);
+		return getField(row, col, lay) == Mark.EMPTY;
+	}
+
+	/**
+	 * Checks if all fields on the board are filled with either mark XX or OO
+	 * 
+	 * @return true if all fields are not filled with Mark.EMPTY
+	 */
+	/*@pure */
+	public boolean isFull() {
+		for (int l = 0; l < DIM; l++) {
+			for (int r = 0; r < DIM; r++) {
+				for (int c = 0; c < DIM; c++) {
+					try {
+						if (getField(r, c, l) == Mark.EMPTY) {
+							return false;
+						}
+					} catch (CoordinatesNotFoundException e) {
+						// This should logically never happen, but just to be sure.
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Determines if the end of the game is present.
+	 * 
+	 * @return true if the game has a winner or when there is a draw (isFull)
+	 */
+	/*@pure */
+	public boolean gameOver() {
+		return hasWinner() || isFull();
 	}
 
 	/**
@@ -113,13 +167,13 @@ public class Board {
 	 * @throws CoordinatesNotFoundException
 	 *             if field is out of range
 	 */
-	// @ requires this.isField(row,col,lay);
-	// @ ensures \result (this.getField(row,col,(lay-1)) != Mark.EMPTY);
-	/* @pure */
+	//@requires this.isField(row,col,lay);
+	//@ensures \result == (this.getField(row,col,(lay-1)) != Mark.EMPTY);
+	/*@pure */
 	public boolean belowIsNotEmpty(int row, int col, int lay) throws CoordinatesNotFoundException {
 		if (lay == 0) {
 			return true;
-		} else if (!(isEmptyField(row, col, (lay - 1)))) {
+		} else if (!isEmptyField(row, col, lay - 1)) {
 			return true;
 		} else {
 			return false;
@@ -141,14 +195,24 @@ public class Board {
 	 * @throws CoordinatesNotFoundException
 	 *             if field is out of range
 	 */
-	// @ requires this.isField(row,col,lay);
-	// @ ensures this.getField == m;
+	//@requires this.isField(row,col,lay);
+	//@ensures this.getField(row,col,lay) == m;
 	public void setField(int row, int col, int lay, Mark m) throws CoordinatesNotFoundException {
 		if (isEmptyField(row, col, lay) && belowIsNotEmpty(row, col, lay)) {
 			fields[row][col][lay] = m;
 		}
 	}
 
+	/**
+	 * Checks if the Board has a row with given Mark
+	 * 
+	 * @param m
+	 *            the mark
+	 * @return true if there is a row controlled by m
+	 * @throws CoordinatesNotFoundException
+	 *             if field is out of range
+	 */
+	/*@pure */
 	public boolean hasRow(Mark m) throws CoordinatesNotFoundException {
 		for (int l = 0; l < DIM; l++) {
 			for (int r = 0; r < DIM; r++) {
@@ -167,6 +231,16 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Checks if the Board has a column with given Mark m
+	 * 
+	 * @param m
+	 *            the mark
+	 * @return true if there is a column controlled by m
+	 * @throws CoordinatesNotFoundException
+	 *             if field is out of range
+	 */
+	/*@pure */
 	public boolean hasColumn(Mark m) throws CoordinatesNotFoundException {
 		for (int l = 0; l < DIM; l++) {
 			for (int c = 0; c < DIM; c++) {
@@ -185,6 +259,16 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Checks if the board has a vertical row with Mark m
+	 * 
+	 * @param m
+	 *            the mark
+	 * @return true if a vertical row is controlled by m
+	 * @throws CoordinatesNotFoundException
+	 *             if field is out of range
+	 */
+	/*@pure */
 	public boolean hasTower(Mark m) throws CoordinatesNotFoundException {
 		for (int r = 0; r < DIM; r++) {
 			for (int c = 0; c < DIM; c++) {
@@ -203,6 +287,15 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Checks if the Board has a diagonal with row Mark m
+	 * 
+	 * @param m
+	 * 			the mark
+	 * @return true if the a diagonal row is controlled by m
+	 * @throws CoordinatesNotFoundException if field is out of range
+	 */
+	/*@pure */
 	public boolean hasDiagonal(Mark m) throws CoordinatesNotFoundException {
 		for (int c = 0; c < DIM; c++) {
 			boolean a = true;
@@ -210,7 +303,11 @@ public class Board {
 			boolean x = true;
 			boolean y = true;
 			boolean o = true;
-			boolean n = true;
+			boolean r = true;
+			// Every Mark beneath checks a diagonal line:
+			// From left to right and the other way around
+			// This is done in three dimensions, so every diagonal line is checked
+			// as the counter l goes up
 			for (int l = 0; l < DIM; l++) {
 				Mark f = getField(l, c, l);
 				a = f == m && a;
@@ -223,9 +320,9 @@ public class Board {
 				Mark f5 = getField(l, l, c);
 				o = f5 == m && o;
 				Mark f6 = getField(l, DIM - l - 1, c);
-				n = f6 == m && n;
+				r = f6 == m && r;
 			}
-			if (a || b || x || y || o || n) {
+			if (a || b || x || y || o || r) {
 				return true;
 			}
 		}
@@ -249,17 +346,42 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Checks if there is a winner with the given Mark m
+	 * 
+	 * @param m
+	 * 			the mark
+	 * @return true if m returns true at hasRow, hasColumn, hasDiagonal or hasTower.
+	 */
+	//@requires m != Mark.EMPTY;
+	/*@pure */
 	public boolean isWinner(Mark m) {
 		try {
-			return (hasRow(m) || hasColumn(m) || hasDiagonal(m) || hasTower(m));
+			return hasRow(m) || hasColumn(m) || hasDiagonal(m) || hasTower(m);
 		} catch (CoordinatesNotFoundException e) {
+			// This should logically never happen but just in case
 			System.out.println("Coordinates not found or out of range.");
 		}
 		return false;
 	}
 
+	/**
+	 * Checks if there is a winner on the board
+	 * 
+	 * @return true if Mark.OO or Mark.XX isWinner
+	 */
+	//@ensures \result == isWinner(Mark.OO) || isWinner(Mark.XX);
+	/*@pure */
 	public boolean hasWinner() {
-		return (isWinner(Mark.OO) || isWinner(Mark.XX));
+		return isWinner(Mark.OO) || isWinner(Mark.XX);
+	}
+
+	/**
+	 * Resets the board by filling the fields with Mark.EMPTY.
+	 */
+	//@ensures (\forall int i,j,k; 0 <= i && i < DIM && 0 <= j && j < DIM && 0 <= k && k < DIM; this.getField(i,j,k) == Mark.EMPTY);
+	public void reset() {
+		Arrays.fill(fields, Mark.EMPTY);
 	}
 
 	/**

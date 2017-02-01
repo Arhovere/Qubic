@@ -1,4 +1,4 @@
-package Board;
+package board;
 
 /**
  * Represents a mark in the Qubic game. There are three possible values:
@@ -12,10 +12,9 @@ public enum Mark {
 	EMPTY, XX, OO;
 
 	
-    /*@
-    ensures this == Mark.XX ==> \result == Mark.OO;
-    ensures this == Mark.OO ==> \result == Mark.XX;
-    ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
+    /*@ensures this == Mark.XX ==> \result == Mark.OO;
+    @ensures this == Mark.OO ==> \result == Mark.XX;
+    @ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
   */
 	/**
 	 * Returns the opposite Mark, or empty.
