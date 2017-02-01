@@ -15,11 +15,6 @@ public class Board {
 	private Mark[][][] fields;
 
 	public static final int DIM = 4;
-	// private static final String[] RASTER = { "___|___|___", "---+---+---", "
-	// | | ", "---+---+---",
-	// " | | " };
-	// private static final String LINE = RASTER[1];
-	// private static final String SPACE = " ";
 
 	// -----Constructor----------------------------------------------
 
@@ -58,7 +53,7 @@ public class Board {
 
 	/**
 	 * Checks if either player or bot aren't cheating by entering an invalid
-	 * field.
+	 * field. We're watching you.
 	 * 
 	 * @param row
 	 *            number of the row (or X-coordinate)
@@ -366,7 +361,7 @@ public class Board {
 	}
 
 	/**
-	 * Checks if there is a winner on the board
+	 * Checks if there is a winner on the board (although we're all winners)
 	 * 
 	 * @return true if Mark.OO or Mark.XX isWinner
 	 */
@@ -388,12 +383,43 @@ public class Board {
 	 * Returns a string representation of the current layer. Also conveniently
 	 * shows a number representation of the layer. Oh wait, it's a TUI, so we
 	 * don't. It could get very messy with all the numbers.
+	 * I kindly refer to the other toString() method for a more
+	 * complete approach to toStringness.
 	 * 
 	 * @return The current layer represented in a String.
 	 */
-	public String toStringLayer() {
-		String s = "";
-		return s;
+	/*@pure */
+	public String toStringLayer(int layer) {
+		String header = "Layer: " + layer + "\n";
+
+		String board = "";
+		for (int r = 0; r < DIM; r++) {
+			for (int c = 0; c < DIM; c++) {
+				try {
+					board += getField(r, c, layer).toString() + " ";
+				} catch (CoordinatesNotFoundException e) {
+					// This will never happen, as it is already checked before
+					e.printStackTrace();
+				}
+			}
+			board += "\n";
+		}
+
+		return header + board + "\n";
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	/*@pure */
+	public String toString() {
+		String header = "Board: \n";
+		String board = "";
+		for (int i = DIM - 1; i >= 0; i--) {
+			board += toStringLayer(i) + "\n";
+		}
+		
+		return header + board;
 	}
 
 }
