@@ -203,7 +203,32 @@ public class Board {
 		return false;
 	}
 
-	public boolean hasDiagonal(Mark m) {
+	public boolean hasDiagonal(Mark m) throws CoordinatesNotFoundException {
+		for (int c = 0; c < DIM; c++) {
+			boolean a = true;
+			boolean b = true;
+			boolean x = true;
+			boolean y = true;
+			boolean o = true;
+			boolean n = true;
+			for (int l = 0; l < DIM; l++) {
+				Mark f = getField(l, c, l);
+				a = f == m && a;
+				Mark f2 = getField(l, c, DIM - 1 - l);
+				b = f2 == m && b;
+				Mark f3 = getField(c, l, l);
+				x = f3 == m && x;
+				Mark f4 = getField(c, l, DIM - 1 - l);
+				y = f4 == m && y;
+				Mark f5 = getField(l, l, c);
+				o = f5 == m && o;
+				Mark f6 = getField(l, DIM - l - 1, c);
+				n = f6 == m && n;
+			}
+			if (a || b || x || y || o || n) {
+				return true;
+			}
+		}
 		return false;
 	}
 
