@@ -229,6 +229,23 @@ public class Board {
 				return true;
 			}
 		}
+		boolean a = true;
+		boolean b = true;
+		boolean c = true;
+		boolean d = true;
+		for (int i = 0; i < DIM; i++) {
+			Mark f = getField(i, i, i);
+			a = f == m && a;
+			Mark f2 = getField(DIM - 1 - i, i, i);
+			b = f2 == m && b;
+			Mark f3 = getField(i, DIM - 1 - i, i);
+			c = f3 == m && c;
+			Mark f4 = getField(DIM - 1 - i, DIM - 1 - i, i);
+			d = f4 == m && d;
+		}
+		if (a || b || c || d) {
+			return true;
+		}
 		return false;
 	}
 
