@@ -24,7 +24,13 @@ public class Board {
 	 */
 	public Board() {
 		fields = new Mark[DIM][DIM][DIM];
-		Arrays.fill(fields, Mark.EMPTY);
+		for (int kwik = 0; kwik < DIM; kwik++) {
+			for (int kwek = 0; kwek < DIM; kwek++) {
+				for (int kwak = 0; kwak < DIM; kwak++) {
+					fields[kwik][kwek][kwak] = Mark.EMPTY;
+				}
+			}
+		}
 	}
 
 	// -----Methods--------------------------------------------------
@@ -376,7 +382,13 @@ public class Board {
 	 */
 	//@ensures (\forall int i,j,k; 0 <= i && i < DIM && 0 <= j && j < DIM && 0 <= k && k < DIM; this.getField(i,j,k) == Mark.EMPTY);
 	public void reset() {
-		Arrays.fill(fields, Mark.EMPTY);
+		for (int kwik = 0; kwik < DIM; kwik++) {
+			for (int kwek = 0; kwek < DIM; kwek++) {
+				for (int kwak = 0; kwak < DIM; kwak++) {
+					fields[kwik][kwek][kwak] = Mark.EMPTY;
+				}
+			}
+		}
 	}
 
 	/**
