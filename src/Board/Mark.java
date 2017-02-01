@@ -20,7 +20,7 @@ public enum Mark {
 	/**
 	 * Returns the opposite Mark, or empty.
 	 * 
-	 * @return The other Mark, that is not EMPTY.
+	 * @return The other Mark, that is, obviously, not EMPTY. Otherwise EMPTY.
 	 */
 	public Mark reverse() {
 		if (this == XX) {
