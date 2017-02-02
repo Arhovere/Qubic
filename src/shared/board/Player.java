@@ -59,6 +59,7 @@ public abstract class Player {
 	 * @param board
 	 * 				the current game board
 	 * @return int array with the coordinates for your battlemove
+	 * @throws CoordinatesNotFoundException if field is out of range
 	 */
 	/*@
 	requires board != null & !board.isFull();
@@ -67,7 +68,7 @@ public abstract class Player {
 	
 	*/
 	/*@pure */
-	public abstract int[] determineMove(Board board);
+	public abstract int[] determineMove(Board board) throws CoordinatesNotFoundException;
 
 	/**
 	 * Moves your armies across the board according to your battleplan.

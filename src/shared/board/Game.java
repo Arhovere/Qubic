@@ -52,6 +52,7 @@ public class Game {
 			reset();
 			play();
 			another = readBoolean("\nWant to play another time? (Yes/No)?", "Yes", "No");
+			
 		}
 	}
 
@@ -74,11 +75,12 @@ public class Game {
 			update();
 			try {
 				players[current].makeMove(board);
+				current = ++current % NO_PLAYERS;
 			} catch (CoordinatesNotFoundException e) {
 				//This is really unlikely to happen, but, you know, just in case...
-				System.out.println("Coordinates out of range.");
+				System.err.println("Coordinates out of range.");
 			}
-			current = ++current % NO_PLAYERS;
+			
 		}
 		printResult();
 	}
