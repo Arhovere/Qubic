@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Exceptions.CoordinatesNotFoundException;
 import board.Board;
 import board.Mark;
+import exceptions.CoordinatesNotFoundException;
 
 public class BoardTest {
-	Board board;
+	private Board board;
 
 	@Before
 	public void setUp() throws Exception {

@@ -1,8 +1,6 @@
 package board;
 
-import java.util.Arrays;
-
-import Exceptions.CoordinatesNotFoundException;
+import exceptions.CoordinatesNotFoundException;
 
 /**
  * This is the game board for a Qubic game.
@@ -12,6 +10,11 @@ import Exceptions.CoordinatesNotFoundException;
  */
 public class Board {
 	// -----Fields---------------------------------------------------
+	/**
+	 * A 3 dimensional array filled with marks, mostly emptiness at the beginning.
+	 * You could say fields is a little dead on the inside.
+	 * 
+	 */
 	private Mark[][][] fields;
 
 	public static final int DIM = 4;
@@ -174,11 +177,8 @@ public class Board {
 	public boolean belowIsNotEmpty(int row, int col, int lay) throws CoordinatesNotFoundException {
 		if (lay == 0) {
 			return true;
-		} else if (!isEmptyField(row, col, lay - 1)) {
-			return true;
-		} else {
-			return false;
 		}
+		return !isEmptyField(row, col, lay - 1);
 	}
 
 	/**
@@ -261,7 +261,8 @@ public class Board {
 	}
 
 	/**
-	 * Checks if the board has a vertical row with Mark m
+	 * Checks if the board has a vertical row, a so called tower*, with Mark m
+	 * *Disclaimer: No princess present.
 	 * 
 	 * @param m
 	 *            the mark
@@ -379,6 +380,7 @@ public class Board {
 
 	/**
 	 * Resets the board by filling the fields with Mark.EMPTY.
+	 * All current fields on the board will return to dust.
 	 */
 	//@ensures (\forall int i,j,k; 0 <= i && i < DIM && 0 <= j && j < DIM && 0 <= k && k < DIM; this.getField(i,j,k) == Mark.EMPTY);
 	public void reset() {
@@ -419,7 +421,7 @@ public class Board {
 
 		return header + board + "\n";
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -430,7 +432,7 @@ public class Board {
 		for (int i = DIM - 1; i >= 0; i--) {
 			board += toStringLayer(i) + "\n";
 		}
-		
+
 		return header + board;
 	}
 
