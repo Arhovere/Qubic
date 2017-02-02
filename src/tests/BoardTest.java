@@ -5,9 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import board.Board;
-import board.Mark;
-import exceptions.CoordinatesNotFoundException;
+import shared.board.Board;
+import shared.board.Mark;
+import shared.exceptions.CoordinatesNotFoundException;
+import shared.exceptions.InvalidArgumentException;
 
 public class BoardTest {
 	private Board board;
@@ -134,7 +135,13 @@ public class BoardTest {
 	}
 
 	@Test
-	public void testIsWinner() throws CoordinatesNotFoundException {
+	public void testIsWinner() throws CoordinatesNotFoundException, InvalidArgumentException {
+		try {
+			board.isWinner(Mark.EMPTY);
+			fail();
+		} catch (InvalidArgumentException e) {
+			
+		}
 		assertFalse(board.isWinner(Mark.OO));
 		board.setField(0, 0, 0, Mark.OO);
 		board.setField(1, 1, 0, Mark.OO);

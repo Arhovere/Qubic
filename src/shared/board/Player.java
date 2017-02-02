@@ -1,6 +1,6 @@
-package board;
+package shared.board;
 
-import exceptions.CoordinatesNotFoundException;
+import shared.exceptions.CoordinatesNotFoundException;
 
 /**
  * @author beitske

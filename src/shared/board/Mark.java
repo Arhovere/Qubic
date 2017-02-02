@@ -1,4 +1,4 @@
-package board;
+package shared.board;
 
 /**
  * Represents a mark in the Qubic game. There are three possible values:

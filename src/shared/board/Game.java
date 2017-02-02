@@ -1,4 +1,4 @@
-package board;
+package shared.board;
 
 public class Game {
 	// -----Fields---------------------------------------------------

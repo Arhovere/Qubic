@@ -1,6 +1,7 @@
-package board;
+package shared.board;
 
-import exceptions.CoordinatesNotFoundException;
+import shared.exceptions.CoordinatesNotFoundException;
+import shared.exceptions.InvalidArgumentException;
 
 /**
  * This is the game board for a Qubic game.
@@ -50,10 +51,10 @@ public class Board {
 	/*pure */
 	public Board deepCopy() throws CoordinatesNotFoundException {
 		Board newBoard = new Board();
-		for (int l = 0; l < DIM; l++) {
-			for (int r = 0; r < DIM; r++) {
-				for (int c = 0; c < DIM; c++) {
-					newBoard.setField(r, c, l, getField(r, c, l));
+		for (int layer = 0; layer < DIM; layer++) {
+			for (int row = 0; row < DIM; row++) {
+				for (int column = 0; column < DIM; column++) {
+					newBoard.setField(row, column, layer, getField(row, column, layer));
 				}
 			}
 		}
@@ -131,11 +132,11 @@ public class Board {
 	 */
 	/*@pure */
 	public boolean isFull() {
-		for (int l = 0; l < DIM; l++) {
-			for (int r = 0; r < DIM; r++) {
-				for (int c = 0; c < DIM; c++) {
+		for (int layer = 0; layer < DIM; layer++) {
+			for (int row = 0; row < DIM; row++) {
+				for (int column = 0; column < DIM; column++) {
 					try {
-						if (getField(r, c, l) == Mark.EMPTY) {
+						if (getField(row, column, layer) == Mark.EMPTY) {
 							return false;
 						}
 					} catch (CoordinatesNotFoundException e) {
@@ -215,11 +216,11 @@ public class Board {
 	 */
 	/*@pure */
 	public boolean hasRow(Mark m) throws CoordinatesNotFoundException {
-		for (int l = 0; l < DIM; l++) {
-			for (int r = 0; r < DIM; r++) {
+		for (int lay = 0; lay < DIM; lay++) {
+			for (int row = 0; row < DIM; row++) {
 				boolean res = true;
-				for (int c = 0; c < DIM; c++) {
-					if (!(getField(r, c, l) == m)) {
+				for (int col = 0; col < DIM; col++) {
+					if (!(getField(row, col, lay) == m)) {
 						res = false;
 						break;
 					}
@@ -299,32 +300,32 @@ public class Board {
 	 */
 	/*@pure */
 	public boolean hasDiagonal(Mark m) throws CoordinatesNotFoundException {
-		for (int c = 0; c < DIM; c++) {
+		for (int i = 0; i < DIM; i++) {
 			boolean a = true;
 			boolean b = true;
 			boolean x = true;
 			boolean y = true;
-			boolean o = true;
-			boolean r = true;
+			boolean v = true;
+			boolean w = true;
 			// Every Mark beneath checks a diagonal line:
 			// From left to right and the other way around
 			// This is done in three dimensions, so every diagonal line is checked
 			// as the counter l goes up
-			for (int l = 0; l < DIM; l++) {
-				Mark f = getField(l, c, l);
+			for (int j = 0; j < DIM; j++) {
+				Mark f = getField(j, i, j);
 				a = f == m && a;
-				Mark f2 = getField(l, c, DIM - 1 - l);
+				Mark f2 = getField(j, i, DIM - 1 - j);
 				b = f2 == m && b;
-				Mark f3 = getField(c, l, l);
+				Mark f3 = getField(i, j, j);
 				x = f3 == m && x;
-				Mark f4 = getField(c, l, DIM - 1 - l);
+				Mark f4 = getField(i, j, DIM - 1 - j);
 				y = f4 == m && y;
-				Mark f5 = getField(l, l, c);
-				o = f5 == m && o;
-				Mark f6 = getField(l, DIM - l - 1, c);
-				r = f6 == m && r;
+				Mark f5 = getField(j, j, i);
+				v = f5 == m && v;
+				Mark f6 = getField(j, DIM - j - 1, i);
+				w = f6 == m && w;
 			}
-			if (a || b || x || y || o || r) {
+			if (a || b || x || y || v || w) {
 				return true;
 			}
 		}
@@ -354,10 +355,14 @@ public class Board {
 	 * @param m
 	 * 			the mark
 	 * @return true if m returns true at hasRow, hasColumn, hasDiagonal or hasTower.
+	 * @throws InvalidArgumentException if the mark is Mark.EMPTY
 	 */
 	//@requires m != Mark.EMPTY;
 	/*@pure */
-	public boolean isWinner(Mark m) {
+	public boolean isWinner(Mark m) throws InvalidArgumentException {
+		if (m == Mark.EMPTY) {
+			throw new InvalidArgumentException("Argument Mark.EMPTY is invalid.");
+		}
 		try {
 			return hasRow(m) || hasColumn(m) || hasDiagonal(m) || hasTower(m);
 		} catch (CoordinatesNotFoundException e) {
@@ -375,7 +380,11 @@ public class Board {
 	//@ensures \result == isWinner(Mark.OO) || isWinner(Mark.XX);
 	/*@pure */
 	public boolean hasWinner() {
-		return isWinner(Mark.OO) || isWinner(Mark.XX);
+		try {
+			return isWinner(Mark.OO) || isWinner(Mark.XX);
+		} catch (InvalidArgumentException e) {
+			return false;
+		}
 	}
 
 	/**
