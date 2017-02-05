@@ -1,5 +1,11 @@
 package shared.server;
 
+/**
+ * Enum list with commands from the Client to the Server.
+ * 
+ * @author beitske
+ *
+ */
 public enum ServerMessages {
 	
 	SERVERCAPABILITIES("serverCapabilities"),

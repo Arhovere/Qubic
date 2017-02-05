@@ -10,6 +10,17 @@ import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * ServerHandler is set up by a Client. 
+ * Like Hengelo, the Enschedesestraat is part of it although it will 
+ * eventually lead to Enschede. This is comparable to the Client: 
+ * It will set up a connection that via the ClientHandler sends info to 
+ * the Server.
+ * (Metaphor 3/4. ServerHandler < Previous] - [Next > ClientHandler )
+ * 
+ * @author beitske
+ *
+ */
 public class ServerHandler implements Runnable {
 	// -----Fields---------------------------------------------------
 	public static final String EXIT = "exit";
@@ -155,5 +166,9 @@ public class ServerHandler implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

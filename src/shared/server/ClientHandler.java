@@ -10,6 +10,15 @@ import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Last but not least, ClientHandler. ClientHandler is set up by the Server.
+ * ClientHandler is the Hengelosestraat to Server Enschede. Also here, 
+ * it sets up a connection to eventually communicate with the Client(s).
+ * (Metaphor 4/4. ServerHandler < Previous] )
+ * 
+ * @author beitske
+ *
+ */
 public class ClientHandler extends Thread {
 	// -----Fields---------------------------------------------------
 	protected Socket sock;
@@ -89,5 +98,9 @@ public class ClientHandler extends Thread {
 	
 	public void setUpdated(boolean update) {
 		updated = update;
+	}
+	
+	public String getPlayerName() {
+		return name;
 	}
 }

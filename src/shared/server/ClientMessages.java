@@ -1,5 +1,11 @@
 package shared.server;
 
+/**
+ * Enum list with commands from the Server to the Client.
+ * 
+ * @author beitske
+ *
+ */
 public enum ClientMessages {
 	
 	CREATEROOM("createRoom"),
