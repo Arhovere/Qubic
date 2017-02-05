@@ -10,12 +10,34 @@ import shared.board.Mark;
 import shared.exceptions.CoordinatesNotFoundException;
 import shared.exceptions.InvalidArgumentException;
 
+/**
+ * A jUnit test for the Board class. Tests basically all methods 
+ * except for the toString() methods. A wonderful coverage of 84%
+ * is granted. 
+ * Also tests Mark reverse() method.
+ * 
+ * @author beitske
+ *
+ */
 public class BoardTest {
 	private Board board;
+	private Mark markE;
+	private Mark markX;
+	private Mark markO;
 
 	@Before
 	public void setUp() throws Exception {
 		board = new Board();
+		markE = Mark.EMPTY;
+		markX = Mark.XX;
+		markO = Mark.OO;
+	}
+	
+	@Test
+	public void testMark() {
+		assertEquals(markE, markE.reverse());
+		assertEquals(markX, markO.reverse());
+		assertEquals(markO, markX.reverse());
 	}
 
 	@Test
@@ -40,6 +62,7 @@ public class BoardTest {
 	public void testIsField() {
 		assertTrue(board.isField(2, 3, 0));
 		assertFalse(board.isField(Board.DIM + 1, 0, 0));
+		assertFalse(board.isField(-1, 0, -1));
 	}
 
 	@Test
@@ -132,6 +155,18 @@ public class BoardTest {
 		board.setField(2, 2, 0, Mark.OO);
 		board.setField(3, 3, 0, Mark.OO);
 		assertTrue(board.hasDiagonal(Mark.OO));
+		board.reset();
+		board.setField(0, 0, 0, Mark.XX);
+		board.setField(1, 1, 0, Mark.OO);
+		board.setField(1, 1, 1, Mark.XX);
+		board.setField(2, 2, 0, Mark.OO);
+		board.setField(2, 2, 1, Mark.XX);
+		board.setField(3, 3, 0, Mark.OO);
+		board.setField(2, 2, 2, Mark.XX);
+		board.setField(3, 3, 1, Mark.OO);
+		board.setField(3, 3, 2, Mark.OO);
+		board.setField(3, 3, 3, Mark.XX);
+		assertTrue(board.hasDiagonal(Mark.XX));
 	}
 
 	@Test
@@ -143,6 +178,7 @@ public class BoardTest {
 			
 		}
 		assertFalse(board.isWinner(Mark.OO));
+		assertFalse(board.isWinner(Mark.XX));
 		board.setField(0, 0, 0, Mark.OO);
 		board.setField(1, 1, 0, Mark.OO);
 		board.setField(2, 2, 0, Mark.OO);

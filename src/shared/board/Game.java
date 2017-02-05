@@ -5,6 +5,13 @@ import java.util.Scanner;
 import shared.exceptions.CoordinatesNotFoundException;
 import shared.exceptions.InvalidArgumentException;
 
+/**
+ * Game, implement, match.
+ * Sets up a game of Qubic.
+ * 
+ * @author beitske
+ *
+ */
 public class Game {
 	// -----Fields---------------------------------------------------
 	/**
@@ -24,7 +31,7 @@ public class Game {
 
 	/**
 	 * Builds a new game! Players are limited to 2.
-	 * Basically creates a new battlefield and two new knights.
+	 * Basically creates a new battlefield with two new knights.
 	 * 
 	 * @param knight1
 	 * 				Noble knight no 1
@@ -99,9 +106,9 @@ public class Game {
 	 * @param prompt
 	 * 				A string with the description of the quest.
 	 * @param yes
-	 * 				Aye!
+	 * 				String Aye!
 	 * @param no
-	 * 				Nay!
+	 * 				String Nay!
 	 * @return String with the answer of the player.
 	 */
 	private boolean readBoolean(String prompt, String yes, String no) {
@@ -116,7 +123,7 @@ public class Game {
 	}
 
 	/**
-	 * Tells the world (also known as compiler) about the outcome
+	 * Tells the world (also known as console screen) about the outcome 
 	 * of the epic battle! Might be an (epic) draw though.
 	 * 
 	 */

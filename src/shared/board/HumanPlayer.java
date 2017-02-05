@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 import shared.exceptions.CoordinatesNotFoundException;
 
+/**
+ * Implements a, big surprise, human player.
+ * 
+ * @author beitske
+ *
+ */
 public class HumanPlayer extends Player {
 
 	// -----Constructor----------------------------------------------

@@ -1,5 +1,11 @@
 package shared.exceptions;
 
+/**
+ * Exception class for if the field is out of range.
+ * 
+ * @author beitske
+ *
+ */
 public class CoordinatesNotFoundException extends Exception {
 
 	/**

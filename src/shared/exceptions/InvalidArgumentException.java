@@ -1,5 +1,11 @@
 package shared.exceptions;
 
+/**
+ * Exception class for if the argument is invalid.
+ * 
+ * @author beitske
+ *
+ */
 public class InvalidArgumentException extends Exception {
 	
 	/**

@@ -3,6 +3,9 @@ package shared.board;
 import shared.exceptions.CoordinatesNotFoundException;
 
 /**
+ * Abstract meant to implement different types of players: 
+ * as well humans as robots.
+ * 
  * @author beitske
  *
  */
@@ -58,7 +61,7 @@ public abstract class Player {
 	 * 
 	 * @param board
 	 * 				the current game board
-	 * @return int array with the coordinates for your battlemove
+	 * @return int array with the coordinates for your battle move
 	 * @throws CoordinatesNotFoundException if field is out of range
 	 */
 	/*@

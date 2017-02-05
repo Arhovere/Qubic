@@ -1,5 +1,11 @@
 package shared.board;
 
+/**
+ * This is the main method to create a new game.
+ * 
+ * @author beitske
+ *
+ */
 public class Qubic {
 	
 	/**
