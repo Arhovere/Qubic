@@ -388,6 +388,24 @@ public class Board {
 	}
 
 	/**
+	 * In case of 3 am networking problems a function that checks 
+	 * what is the valid layer belonging to a given row and column.
+	 * 
+	 * @param row
+	 * @param column
+	 * @return int with the valid layers
+	 * @throws CoordinatesNotFoundException if there is no valid field for this combination
+	 */
+	public int findLayer(int row, int column) throws CoordinatesNotFoundException {
+		for (int i = DIM - 1; i >= 0; i--) {
+			if (belowIsNotEmpty(row, column, i) && isEmptyField(row, column, i)) {
+				return i;
+			}
+		}
+		throw new CoordinatesNotFoundException("Coordinates are not valid.");
+	}
+
+	/**
 	 * Resets the board by filling the fields with Mark.EMPTY.
 	 * All current fields on the board will return to dust.
 	 */

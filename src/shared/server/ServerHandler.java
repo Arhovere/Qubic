@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ServerHandler implements Runnable {
 	// -----Fields---------------------------------------------------
@@ -26,6 +28,11 @@ public class ServerHandler implements Runnable {
 	private boolean chat;
 	private boolean autoR;
 	private int id;
+	
+	public Lock lock = new ReentrantLock();
+	
+	private boolean updated = false;
+	private int[] move;
 
 	// -----Constructor----------------------------------------------
 	public ServerHandler(Socket sock) throws IOException {
@@ -65,6 +72,10 @@ public class ServerHandler implements Runnable {
 				case NOTIFYMESSAGE:
 					break;
 				case NOTIFYMOVE:
+					lock.lock();
+					move = new int[]{Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3])};
+					updated = true;
+					lock.unlock();
 					break;
 				case ROOMCREATED:
 					break;
@@ -96,8 +107,12 @@ public class ServerHandler implements Runnable {
 					}
 					break;
 				case STARTGAME:
+					
 					break;
 				case TURNOFPLAYER:
+					if (Integer.parseInt(cmd[1])==id) {
+						
+					}
 					break;
 				default:
 					break;
@@ -114,5 +129,31 @@ public class ServerHandler implements Runnable {
 			e.printStackTrace();
 		}
 		System.exit(0);
+	}
+	
+	public boolean isUpdated() {
+		return updated;
+	}
+	
+	public void setUpdated(boolean update) {
+		updated = update;
+	}
+	
+	public int[] getMove() {
+		return move;
+	}
+	
+	public void makeMove() {
+		sendMessage(ClientMessages.MAKEMOVE.getMessage() + " " + move[0] + " " + move[1]);
+	}
+	
+	public void sendMessage(String string) {
+		try {
+			out.write(string);
+			out.newLine();
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

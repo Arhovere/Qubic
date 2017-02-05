@@ -7,6 +7,7 @@ import java.net.Socket;
 public class Server {
 	// -----Fields---------------------------------------------------
 	private static final String INFO = "Info needed: " + Server.class.getName() + "<port>";
+	public static int id = 0;
 
 	// -----Main-----------------------------------------------------
 	public static void main(String[] args) {
@@ -62,6 +63,11 @@ public class Server {
 			System.err.println("Resquiem in pace.");
 			System.exit(-1);
 		}
+	}
+	
+	public static int getID() {
+		id++ ;
+		return id;
 	}
 
 }

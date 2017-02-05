@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ClientHandler extends Thread {
 	// -----Fields---------------------------------------------------
@@ -24,7 +26,12 @@ public class ClientHandler extends Thread {
 	private int winl;
 	private boolean chat;
 	private boolean autoR;
-	private static int id = 1;
+	private int id;
+	
+	private boolean updated = false;
+	private int[] move;
+	
+	public Lock lock = new ReentrantLock();
 
 	// -----Constructor----------------------------------------------
 	public ClientHandler(Socket socket, Server server) {
@@ -46,11 +53,11 @@ public class ClientHandler extends Thread {
 	// -----Methods--------------------------------------------------
 	@Override
 	public void run() {
+		id = Server.getID();
 		while (in.hasNextLine()) {
 			String line = in.nextLine();
 			String[] cmd = line.split(" ");
 			sendMessage(ServerMessages.ASSIGNID.getMessage() + " " + id);
-			id++;
 		}
 	}
 
@@ -62,5 +69,25 @@ public class ClientHandler extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void sendPlayerTurn() {
+		sendMessage(ServerMessages.TURNOFPLAYER.getMessage() + " " + id);
+	}
+	
+	public void notifyMove() {
+		sendMessage(ServerMessages.NOTIFYMOVE.getMessage() + " " + move[0] + " " + move[1]);
+	}
+	
+	public int[] getMove() {
+		return move;
+	}
+	
+	public boolean isUpdated() {
+		return updated;
+	}
+	
+	public void setUpdated(boolean update) {
+		updated = update;
 	}
 }
