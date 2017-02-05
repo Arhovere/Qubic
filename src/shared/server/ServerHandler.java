@@ -46,6 +46,13 @@ public class ServerHandler implements Runnable {
 	private int[] move;
 
 	// -----Constructor----------------------------------------------
+	/**
+	 * Creates new ServerHandler by the given socket
+	 * 
+	 * @param sock
+	 * 				the socket passed on by the client
+	 * @throws IOException if the socket is incorrect
+	 */
 	public ServerHandler(Socket sock) throws IOException {
 		this.sock = sock;
 		out = new BufferedWriter(new OutputStreamWriter(this.sock.getOutputStream()));
@@ -53,6 +60,9 @@ public class ServerHandler implements Runnable {
 
 	// -----Methods--------------------------------------------------
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		try {
@@ -67,6 +77,12 @@ public class ServerHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Handles the terminal input.
+	 * Basically reads out the ServerMessages that have been passed on by the Client. 
+	 * Also handles threading by the use of Locks. This means two threads won't be 
+	 * able to update at the same time, which would cause serious errors.
+	 */
 	public void handleTerminalInput() {
 		Scanner userInput = new Scanner(System.in);
 		while (userInput.hasNextLine()) {
@@ -131,6 +147,9 @@ public class ServerHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Shuts down the connection.
+	 */
 	public void shutDown() {
 		try {
 			in.close();
@@ -142,22 +161,47 @@ public class ServerHandler implements Runnable {
 		System.exit(0);
 	}
 	
+	/**
+	 * Returns the state of updated.
+	 * 
+	 * @return boolean updated
+	 */
 	public boolean isUpdated() {
 		return updated;
 	}
 	
+	/**
+	 * Sets updated to a new value
+	 * 
+	 * @param update
+	 * 				boolean true or false
+	 */
 	public void setUpdated(boolean update) {
 		updated = update;
 	}
 	
+	/**
+	 * Returns the move
+	 * 
+	 * @return int array with coordinates
+	 */
 	public int[] getMove() {
 		return move;
 	}
 	
+	/**
+	 * Sends message to the ClientHandler with a move
+	 */
 	public void makeMove() {
 		sendMessage(ClientMessages.MAKEMOVE.getMessage() + " " + move[0] + " " + move[1]);
 	}
 	
+	/**
+	 * Method to send messages to the ClientHandler
+	 * 
+	 * @param string
+	 * 				String that should be send to the ClientHandler
+	 */
 	public void sendMessage(String string) {
 		try {
 			out.write(string);

@@ -22,16 +22,21 @@ public enum ServerMessages {
 	
 	private final String message;
 	
+	/**
+	 * Returns message with ServerMessage.
+	 * @param message
+	 * 				String with message
+	 */
 	ServerMessages(String message) {
 		this.message = message;
 	}
 	
+	/**
+	 * Returns message.
+	 * @return String message
+	 */
 	public String getMessage() {
 		return message;
 	}
-	
-	public boolean equals(String other) {
-        return other.equalsIgnoreCase(message);
-    }
 
 }

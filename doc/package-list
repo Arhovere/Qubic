@@ -1,1 +1,4 @@
 shared.board
+shared.exceptions
+shared.server
+tests

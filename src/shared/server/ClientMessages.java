@@ -19,10 +19,21 @@ public enum ClientMessages {
 
     private final String message;
 
+    /**
+     * Method to return the clientmessages.
+     * 
+     * @param message
+     * 				String to be returned
+     */
     ClientMessages(String message) {
         this.message = message;
     }
     
+    /**
+     * Returns message.
+     * 
+     * @return String message
+     */
     public String getMessage() {
     	return message;
     }

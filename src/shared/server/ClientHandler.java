@@ -19,6 +19,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author beitske
  *
  */
+/**
+ * @author beitske
+ *
+ */
 public class ClientHandler extends Thread {
 	// -----Fields---------------------------------------------------
 	protected Socket sock;
@@ -43,6 +47,14 @@ public class ClientHandler extends Thread {
 	public Lock lock = new ReentrantLock();
 
 	// -----Constructor----------------------------------------------
+	/**
+	 * Creates a ClientHandler based on the given socket and server.
+	 * 
+	 * @param socket
+	 * 				socket passed on by the server
+	 * @param server
+	 * 				the server that creates the clienthandler
+	 */
 	public ClientHandler(Socket socket, Server server) {
 		sock = socket;
 		this.server = server;
@@ -55,11 +67,20 @@ public class ClientHandler extends Thread {
 
 	}
 
+	/**
+	 * Prints inserted line.
+	 * 
+	 * @param cmd
+	 * 				String array to be printed
+	 */
 	private void print(String[] cmd) {
 		System.out.println(cmd);
 	}
 
 	// -----Methods--------------------------------------------------
+	/* (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
 	@Override
 	public void run() {
 		id = Server.getID();
@@ -70,6 +91,12 @@ public class ClientHandler extends Thread {
 		}
 	}
 
+	/**
+	 * Method to send messages to the ServerHandler
+	 * 
+	 * @param string
+	 * 				String that should be send
+	 */
 	public void sendMessage(String string) {
 		try {
 			out.write(string);
@@ -80,26 +107,53 @@ public class ClientHandler extends Thread {
 		}
 	}
 	
+	/**
+	 * Method to send the turn of the player (and his ID) to the serverhandler
+	 */
 	public void sendPlayerTurn() {
 		sendMessage(ServerMessages.TURNOFPLAYER.getMessage() + " " + id);
 	}
 	
+	/**
+	 * Method to notify the serverhandler about the move of the player
+	 */
 	public void notifyMove() {
 		sendMessage(ServerMessages.NOTIFYMOVE.getMessage() + " " + move[0] + " " + move[1]);
 	}
 	
+	/**
+	 * Returns the move
+	 * 
+	 * @return int array with the move coordinates
+	 */
 	public int[] getMove() {
 		return move;
 	}
 	
+	/**
+	 * Boolean to check if the player has been updated
+	 * 
+	 * @return boolean updated
+	 */
 	public boolean isUpdated() {
 		return updated;
 	}
 	
+	/**
+	 * Sets updated to another value
+	 * 
+	 * @param update
+	 * 				Boolean true or false
+	 */
 	public void setUpdated(boolean update) {
 		updated = update;
 	}
 	
+	/**
+	 * Returns the name of the player
+	 * 
+	 * @return string name
+	 */
 	public String getPlayerName() {
 		return name;
 	}
